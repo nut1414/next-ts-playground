@@ -63,10 +63,10 @@ const Editor: NextPage = () => {
         
       </div>
       <div className="flex flex-row ">
-        <div className=" w-[50%] p-3 text-white">
+        <div className=" w-[50%] h-[95vh] p-3 text-white overflow-y-scroll">
           {JSON.stringify(sData)}
         </div>
-        <div className="bg-white w-[50%] h-screen p-3 break-words drop-shadow-md text-black">
+        <div className="bg-white w-[50%] h-[95vh] p-3 break-words drop-shadow-md text-black overflow-auto">
           {(MyEditor ? <MyEditor onChange={handleSave} handleInitialize={handleInitialize}/> : <></>)}
         </div>
         
