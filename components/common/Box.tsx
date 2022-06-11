@@ -1,9 +1,9 @@
 import React from 'react'
 
 type BoxProps = {
-  color?: String,
-  textColor?: String,
-  className?: String,
+  color?: string,
+  textColor?: string,
+  className?: string,
   children: React.ReactNode
 }
 

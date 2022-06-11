@@ -1,11 +1,11 @@
 import React from 'react'
 
 type ButtonProps = {
-  color?: String,
-  textColor?: String,
-  className?: String,
-  activeColor?: String,
-  hoverColor?: String,
+  color?: string,
+  textColor?: string,
+  className?: string,
+  activeColor?: string,
+  hoverColor?: string,
   onClick?: () => void,
   children: React.ReactNode
 }
