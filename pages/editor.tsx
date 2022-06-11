@@ -10,8 +10,6 @@ import { createReactEditorJS } from 'react-editor-js'
 import dynamic from 'next/dynamic';
 const ReactEditorJS = createReactEditorJS()
 
-const fetcher = (url: string) => axios.get(url).then(res => res.data)
-
 let MyEditor: any;
 MyEditor = dynamic(() => import('../components/editor/MyEditor'),{ ssr: false, loading: () => <p>Loading Editor...</p>, });
 
@@ -19,8 +17,14 @@ const Editor: NextPage = () => {
   const router = useRouter()
   const editorCore = useRef(null)
   const [sData, setSaveData] = useState({})
-  const { data, error } = useSWR('/api/editor/load',fetcher)
+  const [ data, setData ] = useState(null)
 
+  useEffect(() => {
+    axios.get('/api/editor/load').then((newdata: any)=>{
+      console.log(newdata.data)
+      setData(newdata.data)
+    })
+  },[])
   const handleInitialize = useCallback(async (instance: any) => {
     editorCore.current = await instance
     const editCore: any = editorCore?.current
@@ -57,6 +61,9 @@ const Editor: NextPage = () => {
       console.log('sending data to save api')
       const datatodb =  await axios.post('/api/editor/save',sData)
       console.log('datatodb: ' + JSON.stringify(datatodb))
+      if (datatodb.status != 200){
+        alert('Unable to save data')
+      }
     }
   }
 
