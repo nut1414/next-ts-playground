@@ -2,8 +2,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../../utils/db'
 import PageState, { IPageState } from '../../../models/PageState' 
 
-
-
 const options =  {
   upsert: true,
   new: true,

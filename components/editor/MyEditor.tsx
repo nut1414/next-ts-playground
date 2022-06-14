@@ -1,6 +1,6 @@
 import { createReactEditorJS } from "react-editor-js"
 import Table from '@editorjs/table'
-import Paragraph from '@editorjs/paragraph'
+import Image from '@editorjs/image'
 import List from '@editorjs/list'
 import Warning from '@editorjs/warning'
 import Code from '@editorjs/code'
@@ -16,7 +16,7 @@ import { useEffect } from 'react'
 
 const EditorJs = createReactEditorJS()
 
-const MyEditor = ({handleInitialize, onChange, defaultValue}: any) => {
+const MyEditor = ({handleInitialize, onChange, data}: any) => {
   const EDITOR_JS_TOOLS = {
     table: Table,
     list: List,
@@ -29,11 +29,12 @@ const MyEditor = ({handleInitialize, onChange, defaultValue}: any) => {
     checklist: CheckList,
     delimiter: Delimiter,
     inlineCode: InlineCode,
+    image: Image,
     simpleImage: SimpleImage,
   }
   
   return (
-    <EditorJs tools={EDITOR_JS_TOOLS} defaultValue={defaultValue} onChange={onChange} onInitialize={handleInitialize} />
+    <EditorJs tools={EDITOR_JS_TOOLS} data={data} onChange={onChange} onInitialize={handleInitialize} />
   )
 }
 
