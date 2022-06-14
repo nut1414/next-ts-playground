@@ -13,7 +13,6 @@ const ContentPage: NextPage = () => {
 
   useEffect(() => {
     axios.get('/api/editor/load').then((newdata: any)=>{
-      console.log(newdata.data)
       setData(newdata.data)
     })
   },[])

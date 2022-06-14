@@ -40,13 +40,10 @@ const ContentPage: NextPage = ({ data }: any) => {
     blocks: [],
     version: "0"
   } as any)
-  useEffect(() => {
-    console.log(data)
-    setState(JSON.parse(data))
-  },[data])
+  
   return (
     <div>
-      <Output data={state}/>
+      <Output data={JSON.parse(data)}/>
     </div>
   )
 }
