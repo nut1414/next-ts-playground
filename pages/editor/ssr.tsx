@@ -43,7 +43,7 @@ const ContentPage: NextPage = ({ data }: any) => {
   useEffect(() => {
     console.log(data)
     setState(JSON.parse(data))
-  },[])
+  },[data])
   return (
     <div>
       <Output data={state}/>
