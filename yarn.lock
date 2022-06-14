@@ -821,8 +821,8 @@ domutils@^2.8.0:
     domhandler "^4.2.0"
 
 "editorjs-react-renderer@https://github.com/nut1414/EditorJS-React-Renderer.git":
-  version "3.2.0"
-  resolved "https://github.com/nut1414/EditorJS-React-Renderer.git#5f10aa4de1566d4fa36d42dd45efcc911f7d10d4"
+  version "3.2.1"
+  resolved "https://github.com/nut1414/EditorJS-React-Renderer.git#45a2cba4a5f59acb81cd184d567e895a05faad27"
   dependencies:
     buffer "^6.0.3"
     classnames "^2.3.1"
