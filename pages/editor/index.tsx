@@ -27,20 +27,6 @@ const Editor: NextPage = () => {
     const editCore: any = editorCore?.current
     console.log('actually found instance')
     console.log(editCore.render)
-    if (editCore)
-      editCore.render({
-        time: 1635603431943,
-        blocks: [
-          {
-            id: "12iM3lqzcm",
-            type: "paragraph",
-            data: {
-              text:
-                "fml"
-            }
-          }
-        ]
-      })
     
   }, [])
   

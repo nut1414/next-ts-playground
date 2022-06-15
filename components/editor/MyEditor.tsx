@@ -16,6 +16,30 @@ import { useEffect } from 'react'
 
 const EditorJs = createReactEditorJS()
 
+const imageConfig = {
+  uploader: {
+    uploadByFile(file: any){
+      const formData = new FormData()
+      formData.append('file',file)
+      formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_PRESET as string)
+      const data = fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/image/upload`, 
+      {
+        method: 'POST',
+        body: formData
+      }
+      ).then(d => d.json()).then(res => {
+        return {
+          success: 1,
+          file: {
+            url: res.secure_url
+          }
+        }
+      })
+      return data
+    }
+  }
+}
+
 const MyEditor = ({handleInitialize, onChange, data}: any) => {
   const EDITOR_JS_TOOLS = {
     table: Table,
@@ -29,7 +53,10 @@ const MyEditor = ({handleInitialize, onChange, data}: any) => {
     checklist: CheckList,
     delimiter: Delimiter,
     inlineCode: InlineCode,
-    image: Image,
+    image: {
+      class: Image,
+      config: imageConfig
+    },
     simpleImage: SimpleImage,
   }
   
