@@ -7,7 +7,7 @@ type ButtonProps = {
   activeColor?: string,
   hoverColor?: string,
   onClick?: () => void,
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 const ButtonBox = ({ color = '#1f80ca',
