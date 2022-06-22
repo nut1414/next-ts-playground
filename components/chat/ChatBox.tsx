@@ -1,9 +1,8 @@
 import Msg, { MsgData } from './Msg'
-import React, { useEffect, useReducer, useRef } from 'react'
-import { io } from 'socket.io-client'
+import React, { useEffect, useRef } from 'react'
+import useChat, { MsgActionType } from './hook/useChat'
 
-
-const testmsgs: Array<MsgData> = [
+const testmsgs: MsgData[] = [
   {id:'test1',sender:'tester1',senderID:'123123',data:'Never gonna give you up'},
   {id:'test2',sender:'tester2',senderID:'456456',data:'Never gonna let you down'},
   {id:'test3',sender:'tester1',senderID:'123123',data:'Never gonna run around and desert you'},
@@ -16,8 +15,6 @@ const testmsgs: Array<MsgData> = [
   {id:'test10',sender:'tester2',senderID:'456456',data:'We know the game and we\'re gonna play it'},
 ]
 
-
-
 type ChatBoxProps = {
   children?: React.ReactNode
   chatID: string,
@@ -25,26 +22,36 @@ type ChatBoxProps = {
 }
 
 const ChatBox = ({ chatID, currentUser }: ChatBoxProps) => {
-  const [chatMsgs, addChatMsgs] = useReducer((state: Array<MsgData>,item: MsgData) => { return [...state, item] as Array<MsgData>}, [] as Array<MsgData>)
+  const {chatMsgs, changeChatMsgs} = useChat(chatID)
   const textBoxRef = useRef<HTMLInputElement>(null)
+  const chatHoldref = useRef<HTMLDivElement>(null)
+
+  // temp id
   let id = 0
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    addChatMsgs({id:String(id++),sender:'tester1',senderID:currentUser,data:textBoxRef.current?.value || ''})
+    // temp until socket implemented
+    
     if (textBoxRef.current?.value){
+      changeChatMsgs({type: MsgActionType.addMsg, msgs: [{id:String(id++),sender:'tester1',senderID:'123123',data:textBoxRef.current.value}]})
       textBoxRef.current.value = ''
     }
   }
 
   useEffect(() => {
     if(chatMsgs.length === 0)
-      testmsgs.forEach((msg) => {addChatMsgs(msg)})
+      changeChatMsgs({type: MsgActionType.setMsg, msgs: testmsgs})
+  },[])
+
+  useEffect(() => {
+    if (chatHoldref.current)
+      chatHoldref.current.scrollTop = chatHoldref.current.scrollHeight
   },[chatMsgs])
 
   return (
     <div className='flex flex-col'>
-      <div className="flex flex-col overflow-y-scroll h-full max-h-[48rem] min-w-[50rem] my-2 px-4 ">
+      <div ref={chatHoldref} className="flex flex-col overflow-y-scroll h-full max-h-[48rem] min-w-[50rem] my-2 px-4 ">
         {chatMsgs.map((singlemsg) => {
           if (singlemsg.senderID === currentUser)
             return <Msg key={singlemsg.id} msg={singlemsg} asAuthor={true}/>
