@@ -29,10 +29,10 @@ const cached: IMongoConnection = global.mongooseconn
 export default async function dbConnect() {
   try {
     if (!cached.conn) {
-        console.log('Connecting to MongoDb..')
-        const conn: typeof mongoose = await mongoose.connect(MONGODB_URI,opts as mongoose.ConnectOptions)
-        cached.conn = conn
-      } 
+      console.log('Connecting to MongoDb..')
+      const conn: typeof mongoose = await mongoose.connect(MONGODB_URI,opts as mongoose.ConnectOptions)
+      cached.conn = conn
+    } 
   }catch (e: any) {
     throw new Error(e)
   } 

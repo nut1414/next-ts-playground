@@ -21,11 +21,11 @@ export default async function handler(
       time: 1635603431943,
       blocks: [
         {
-          id: "12iM3lqzcm",
-          type: "paragraph",
+          id: '12iM3lqzcm',
+          type: 'paragraph',
           data: {
             text:
-              "Hey. Meet the new Editor. On this page you can see it in action — try to edit this text."
+              'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text.'
           }
         }
       ]

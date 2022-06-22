@@ -1,4 +1,4 @@
-import { createReactEditorJS } from "react-editor-js"
+import { createReactEditorJS } from 'react-editor-js'
 import Table from '@editorjs/table'
 import Image from '@editorjs/image'
 import List from '@editorjs/list'
@@ -23,10 +23,10 @@ const imageConfig = {
       formData.append('file',file)
       formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_PRESET as string)
       const data = fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/image/upload`, 
-      {
-        method: 'POST',
-        body: formData
-      }
+        {
+          method: 'POST',
+          body: formData
+        }
       ).then(d => d.json()).then(res => {
         return {
           success: 1,
@@ -65,4 +65,4 @@ const MyEditor = ({handleInitialize, onChange, data}: any) => {
   )
 }
 
-export default MyEditor;
+export default MyEditor

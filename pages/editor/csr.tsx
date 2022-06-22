@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import dynamic from 'next/dynamic';
+import dynamic from 'next/dynamic'
 
 const Output: any = dynamic(
   async () => (await import('editorjs-react-renderer')).default,
@@ -18,7 +18,7 @@ const ContentPage: NextPage = () => {
   },[])
   return (
     <>
-    <Output data={data}/>
+      <Output data={data}/>
     </>
   )
 }

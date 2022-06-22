@@ -16,10 +16,10 @@ const testmsgs: Array<SingleMsg> = [
   {id:'test4',sender:'tester2',senderID:'456456',data:'Never gonna make you cry'},
   {id:'test5',sender:'tester1',senderID:'123123',data:'Never gonna say goodbye'},
   {id:'test6',sender:'tester2',senderID:'456456',data:'Never gonna tell a lie and hurt you'},
-  {id:'test7',sender:'tester1',senderID:'123123',data:"We've known each other for so long"},
-  {id:'test8',sender:'tester2',senderID:'456456',data:"Your heart's been aching, but you're too shy to say it"},
-  {id:'test9',sender:'tester1',senderID:'123123',data:"Inside, we both know what's been going on"},
-  {id:'test10',sender:'tester2',senderID:'456456',data:"We know the game and we're gonna play it"},
+  {id:'test7',sender:'tester1',senderID:'123123',data:'We\'ve known each other for so long'},
+  {id:'test8',sender:'tester2',senderID:'456456',data:'Your heart\'s been aching, but you\'re too shy to say it'},
+  {id:'test9',sender:'tester1',senderID:'123123',data:'Inside, we both know what\'s been going on'},
+  {id:'test10',sender:'tester2',senderID:'456456',data:'We know the game and we\'re gonna play it'},
 ]
 
 type MsgProps = {
@@ -29,7 +29,7 @@ type MsgProps = {
 
 
 const Msg = ({ msg, asAuthor }: MsgProps) => {
-  const ALIGNCONST = "rounded-full max-w-[25rem] p-3 w-fit break-words"
+  const ALIGNCONST = 'rounded-full max-w-[25rem] p-3 w-fit break-words'
   if (asAuthor){
     return (
       <div className='place-self-end'>

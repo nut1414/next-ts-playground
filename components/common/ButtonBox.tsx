@@ -11,16 +11,16 @@ type ButtonProps = {
 }
 
 const ButtonBox = ({ color = '#1f80ca',
-                      textColor = '#ffffff',
-                      className,
-                      activeColor = '#777',
-                      hoverColor,
-                      onClick,
-                      children }: ButtonProps) => {
+  textColor = '#ffffff',
+  className,
+  activeColor = '#777',
+  hoverColor,
+  onClick,
+  children }: ButtonProps) => {
   return (
-     <button onClick={onClick} className={`bg-[${color}] text-[${textColor}] active:bg-[${activeColor}] text-center align-middle drop-shadow-md p-2 ${className}`}>
-       {children}
-     </button>
+    <button onClick={onClick} className={`bg-[${color}] text-[${textColor}] active:bg-[${activeColor}] text-center align-middle drop-shadow-md p-2 ${className}`}>
+      {children}
+    </button>
   )
 }
 

@@ -8,13 +8,13 @@ type BoxProps = {
 }
 
 const Box = ({ color = '#ffffff',
-               textColor = '#000000',
-               className,
-               children }: BoxProps) => {
+  textColor = '#000000',
+  className,
+  children }: BoxProps) => {
   return (
-     <div className={`bg-[${color}] text-[${textColor}] p-5 drop-shadow-md  ${className}`}>
-       {children}
-     </div>
+    <div className={`bg-[${color}] text-[${textColor}] p-5 drop-shadow-md  ${className}`}>
+      {children}
+    </div>
   )
 }
 export default Box
