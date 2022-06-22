@@ -55,11 +55,11 @@ const ChatBox = ({ chatID, currentUser, currentDisplayName }: ChatBoxProps) => {
     
     <div className='grow bg-white text-black'>
       
-      { connectionStatus === ChatConnectionStatus.CONNECTING && <div className='p-2'>Connecting...</div>}
-      { connectionStatus === ChatConnectionStatus.ERROR && <div className='p-2'>Connection Error. Please wait or reload the page. (The server might be down?)</div>}
+      { connectionStatus === ChatConnectionStatus.CONNECTING && <div className='text-center text-xl p-2'>Connecting...</div>}
+      { connectionStatus === ChatConnectionStatus.ERROR && <div className='text-center text-xl p-2'>Connection Error. Please wait or reload the page. (The server might be down?)</div>}
       { connectionStatus === ChatConnectionStatus.JOINED && 
       <div className='flex flex-col max-h-[95vh]'>
-        
+        <div className='self-center text-xl p-2 text-slate-400'>Connected</div>
         <div ref={chatHoldref} className="flex flex-col grow overflow-y-scroll h-screen min-w-screen my-2 px-4 ">
           {chatMsgs.map((singlemsg) => {
             if (singlemsg.senderId === currentUser)

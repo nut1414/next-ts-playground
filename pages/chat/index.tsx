@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React, { useReducer, useRef, useState } from 'react'
+import React, { useEffect, useReducer, useRef, useState } from 'react'
 import LoginPage from '../../components/auth/LoginPage'
 import SignButton from '../../components/auth/SignButton'
 import ChatBox from '../../components/chat/ChatBox'
@@ -27,8 +27,13 @@ const Chat: NextPage = () => {
   const router = useRouter()
   const [ chatID, setChatID ] = useState('')
   const [ isAsking, toggleAsk ] = useReducer((s: boolean) => chatID ? !s : true, true)
-
-  
+  const { roomid } = router.query
+  useEffect(()=>{
+    if (roomid){
+      setChatID(roomid as string)
+      toggleAsk()
+    }
+  },[roomid])
   if (session){
     return (
       <div className='bg-black'>
