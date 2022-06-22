@@ -6,15 +6,18 @@ import { MsgData } from '../../Msg'
 
 interface SenderMsg {
   sender: string
-  senderid: string
-  msg: string
+  senderId: string
+  data: string
 }
 
 export const emitSendChatMsg = (socket: Socket, sendmsg: SenderMsg) => {
-  // TODO
+  socket.emit('chat:addmsg', sendmsg)
 }
 
 export const emitRequestAllMsg = (socket: Socket) => {
-  // TODO
-  socket.emit('chat.getallmsg')
+  socket.emit('chat:getall')
+}
+
+export const emitJoinRoom = (socket: Socket, roomId: string) => {
+  socket.emit('join', roomId)
 }
