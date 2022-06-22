@@ -12,7 +12,7 @@ const LoginPage = ({ session }: LoginPageProps) => {
   const router = useRouter()
   return (
     <div className="flex h-screen bg-black">
-      <Box className="m-auto flex flex-col w-[15%] ">
+      <Box className="m-auto flex flex-col ">
         <div className="text-center font-bold pb-5 text-2xl">
           Please Sign in
         </div>
