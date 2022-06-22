@@ -60,7 +60,7 @@ const ChatBox = ({ chatID, currentUser, currentDisplayName }: ChatBoxProps) => {
       { connectionStatus === ChatConnectionStatus.JOINED && 
       <div className='flex flex-col max-h-[95vh]'>
         
-        <div ref={chatHoldref} className="flex flex-col grow overflow-y-scroll  min-w-screen my-2 px-4 ">
+        <div ref={chatHoldref} className="flex flex-col grow overflow-y-scroll h-screen min-w-screen my-2 px-4 ">
           {chatMsgs.map((singlemsg) => {
             if (singlemsg.senderId === currentUser)
               return <Msg key={singlemsg._id} msg={singlemsg} asAuthor={true}/>

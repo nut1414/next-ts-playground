@@ -14,8 +14,8 @@ const Msg = ({ msg, asAuthor }: MsgProps) => {
   const ALIGNCONST = 'rounded-full max-w-[25rem] p-3 w-fit break-words'
   if (asAuthor){
     return (
-      <div className='flex flex-col place-self-end p-1'>
-        <div className={`place-self-end bg-blue-500 text-white ${ALIGNCONST}`} >
+      <div className='self-end  p-1'>
+        <div className={`bg-blue-500 place-self-end text-white ${ALIGNCONST}`} >
           {msg.data}
         </div>
       </div>
