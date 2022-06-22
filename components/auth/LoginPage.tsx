@@ -5,7 +5,7 @@ import ButtonBox from '../common/ButtonBox'
 import { Session } from 'next-auth'
 
 type LoginPageProps = {
-  session: Session
+  session?: Session | null
 };
 
 const LoginPage = ({ session }: LoginPageProps) => {

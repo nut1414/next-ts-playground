@@ -2,7 +2,7 @@ import { Session } from 'next-auth'
 import { signIn, signOut } from 'next-auth/react'
 import ButtonBox from '../common/ButtonBox'
 
-const SignButton = ({ session }: { session?: Session  }) => {
+const SignButton = ({ session }: { session?: Session | null  }) => {
   if (session){
     return (
       <ButtonBox onClick={() => signOut()} color="#e00" activeColor="#777" className="flex flex-rol m-2 w-[75%] self-center">

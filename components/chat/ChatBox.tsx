@@ -1,15 +1,9 @@
-import { STATES } from 'mongoose'
+import Msg, { MsgData } from './Msg'
 import React, { useEffect, useReducer, useRef } from 'react'
 import { io } from 'socket.io-client'
 
-interface SingleMsg {
-  id: string
-  sender: string
-  senderID: string
-  data: string
-}
 
-const testmsgs: Array<SingleMsg> = [
+const testmsgs: Array<MsgData> = [
   {id:'test1',sender:'tester1',senderID:'123123',data:'Never gonna give you up'},
   {id:'test2',sender:'tester2',senderID:'456456',data:'Never gonna let you down'},
   {id:'test3',sender:'tester1',senderID:'123123',data:'Never gonna run around and desert you'},
@@ -22,37 +16,7 @@ const testmsgs: Array<SingleMsg> = [
   {id:'test10',sender:'tester2',senderID:'456456',data:'We know the game and we\'re gonna play it'},
 ]
 
-type MsgProps = {
-  msg: SingleMsg,
-  asAuthor?: boolean
-}
 
-
-const Msg = ({ msg, asAuthor }: MsgProps) => {
-  const ALIGNCONST = 'rounded-full max-w-[25rem] p-3 w-fit break-words'
-  if (asAuthor){
-    return (
-      <div className='place-self-end'>
-        <div className='text-right text-lg'>
-          {msg.sender}
-        </div>
-        <div className={`bg-blue-500 text-white ${ALIGNCONST}`} >
-          {msg.data}
-        </div>
-      </div>
-    )
-  }
-  return (
-    <div className='place-self-start'>
-      <div className='text-left text-lg'>
-        {msg.sender}
-      </div>
-      <div className={`bg-slate-500 text-white ${ALIGNCONST}`}>
-        {msg.data}
-      </div>
-    </div>
-  )
-}
 
 type ChatBoxProps = {
   children?: React.ReactNode
@@ -61,22 +25,22 @@ type ChatBoxProps = {
 }
 
 const ChatBox = ({ chatID, currentUser }: ChatBoxProps) => {
-  const [chatMsgs, addChatMsgs] = useReducer((state: Array<SingleMsg>,item: SingleMsg) => { return [...state, item] as Array<SingleMsg>}, [] as Array<SingleMsg>)
+  const [chatMsgs, addChatMsgs] = useReducer((state: Array<MsgData>,item: MsgData) => { return [...state, item] as Array<MsgData>}, [] as Array<MsgData>)
   const textBoxRef = useRef<HTMLInputElement>(null)
   let id = 0
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     addChatMsgs({id:String(id++),sender:'tester1',senderID:currentUser,data:textBoxRef.current?.value || ''})
     if (textBoxRef.current?.value){
       textBoxRef.current.value = ''
     }
-    
   }
 
   useEffect(() => {
     if(chatMsgs.length === 0)
       testmsgs.forEach((msg) => {addChatMsgs(msg)})
-  },[])
+  },[chatMsgs])
 
   return (
     <div className='flex flex-col'>
