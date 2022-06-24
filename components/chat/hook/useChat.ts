@@ -129,7 +129,8 @@ const useChat = (chatId: string) => {
 
   const sendChatMsg = (msg: MsgData) => {
     if (socketRef.current && connectionStatus === ChatConnectionStatus.JOINED){
-      emitSendChatMsg(socketRef.current, msg)
+      const newMsg = new OutboundMsgData(msg)
+      emitSendChatMsg(socketRef.current, newMsg)
     }
   }
 
