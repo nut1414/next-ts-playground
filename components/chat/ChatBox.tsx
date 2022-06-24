@@ -1,18 +1,18 @@
-import Msg, { MsgData } from './Msg'
+import Msg from './Msg'
 import React, { useEffect, useRef } from 'react'
-import useChat, { ChatConnectionStatus, MsgActionType } from './hook/useChat'
+import useChat, { ChatConnectionStatus, MsgData } from './hook/useChat'
 
 const testmsgs: MsgData[] = [
-  {_id:'test1',sender:'tester1',senderId:'123123',data:'Never gonna give you up'},
-  {_id:'test2',sender:'tester2',senderId:'456456',data:'Never gonna let you down'},
-  {_id:'test3',sender:'tester1',senderId:'123123',data:'Never gonna run around and desert you'},
-  {_id:'test4',sender:'tester2',senderId:'456456',data:'Never gonna make you cry'},
-  {_id:'test5',sender:'tester1',senderId:'123123',data:'Never gonna say goodbye'},
-  {_id:'test6',sender:'tester2',senderId:'456456',data:'Never gonna tell a lie and hurt you'},
-  {_id:'test7',sender:'tester1',senderId:'123123',data:'We\'ve known each other for so long'},
-  {_id:'test8',sender:'tester2',senderId:'456456',data:'Your heart\'s been aching, but you\'re too shy to say it'},
-  {_id:'test9',sender:'tester1',senderId:'123123',data:'Inside, we both know what\'s been going on'},
-  {_id:'test10',sender:'tester2',senderId:'456456',data:'We know the game and we\'re gonna play it'},
+  {id:'test1',sender:'tester1',senderId:'123123',content:'Never gonna give you up',contentType:'text',timestamp:new Date().getTime()},
+  {id:'test2',sender:'tester2',senderId:'456456',content:'Never gonna let you down',contentType:'text',timestamp:new Date().getTime()},
+  {id:'test3',sender:'tester1',senderId:'123123',content:'Never gonna run around and desert you',contentType:'text',timestamp:new Date().getTime()},
+  {id:'test4',sender:'tester2',senderId:'456456',content:'Never gonna make you cry',contentType:'text',timestamp:new Date().getTime()},
+  {id:'test5',sender:'tester1',senderId:'123123',content:'Never gonna say goodbye',contentType:'text',timestamp:new Date().getTime()},
+  {id:'test6',sender:'tester2',senderId:'456456',content:'Never gonna tell a lie and hurt you',contentType:'text',timestamp:new Date().getTime()},
+  {id:'test7',sender:'tester1',senderId:'123123',content:'We\'ve known each other for so long',contentType:'text',timestamp:new Date().getTime()},
+  {id:'test8',sender:'tester2',senderId:'456456',content:'Your heart\'s been aching, but you\'re too shy to say it',contentType:'text',timestamp:new Date().getTime()},
+  {id:'test9',sender:'tester1',senderId:'123123',content:'Inside, we both know what\'s been going on',contentType:'text',timestamp:new Date().getTime()},
+  {id:'test10',sender:'tester2',senderId:'456456',content:'We know the game and we\'re gonna play it',contentType:'text',timestamp:new Date().getTime()},
 ]
 
 type ChatBoxProps = {
@@ -23,19 +23,16 @@ type ChatBoxProps = {
 }
 
 const ChatBox = ({ chatID, currentUser, currentDisplayName }: ChatBoxProps) => {
-  const { chatMsgs, changeChatMsgs, connectionStatus, sendChatMsg } = useChat(chatID)
+  const { chatMsgs, changeChatMsgs, connectionStatus, sendTextChatMsg } = useChat(chatID)
   const textBoxRef = useRef<HTMLInputElement>(null)
   const chatHoldref = useRef<HTMLDivElement>(null)
-
-  // temp id
-  let id = 100
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // temp until socket implemented
     
     if (textBoxRef.current?.value){
-      sendChatMsg(currentDisplayName,currentUser,textBoxRef.current.value)
+      sendTextChatMsg(currentDisplayName,currentUser,textBoxRef.current.value)
       textBoxRef.current.value = ''
     }
   }
@@ -63,9 +60,9 @@ const ChatBox = ({ chatID, currentUser, currentDisplayName }: ChatBoxProps) => {
         <div ref={chatHoldref} className="flex flex-col grow overflow-y-scroll h-screen min-w-screen my-2 px-4 ">
           {chatMsgs.map((singlemsg) => {
             if (singlemsg.senderId === currentUser)
-              return <Msg key={singlemsg._id} msg={singlemsg} asAuthor={true}/>
+              return <Msg key={singlemsg.id} msg={singlemsg} asAuthor={true}/>
             else
-              return <Msg key={singlemsg._id} msg={singlemsg}/>
+              return <Msg key={singlemsg.id} msg={singlemsg}/>
           })}
         </div>
         <form onSubmit={handleSubmit} className="flex flex-row p-2 bg-neutral-200 justify-end">

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
-import { MsgData } from '../Msg'
 import { handleConnect, handleConnectError, handleIncomingMsg, handleJoinRoom } from './io/listenEvent'
 import { emitJoinRoom, emitRequestAllMsg, emitSendChatMsg } from './io/emitEvent'
+import mongoose from 'mongoose'
 
 export enum ChatConnectionStatus {
   CONNECTING = 'connecting',  // Initial Connection
@@ -18,6 +18,56 @@ export enum MsgActionType {
   CLEAR = 'clear'
 }
 
+type MsgContentType = 'text' | 'image' | 'empty'
+export interface IMsgData {
+  id?: string
+  _id?: string
+  sender: string
+  senderId: string
+  content: string
+  contentType: MsgContentType
+  timestamp?: number
+}
+
+export class MsgData {
+  public id?: string                  // id should be create on backend server
+  public sender: string
+  public senderId: string
+  public content: string
+  public contentType: MsgContentType
+  public timestamp: number
+  constructor(msg: IMsgData){
+    this.id = msg.id || msg._id
+    this.sender = msg.sender
+    this.senderId = msg.senderId
+    this.content = msg.content
+    this.contentType = msg.contentType
+    this.timestamp = msg.timestamp || 0
+  }
+}
+
+export class InboundMsgData extends MsgData {
+  static total: number = 0
+  constructor(msg: IMsgData){
+    super(msg)
+    InboundMsgData.total++
+  }
+  public static fromObjArray(msgarr: IMsgData[]): InboundMsgData[]{
+    return msgarr.map((msg) => new InboundMsgData(msg))
+  }
+  
+}
+export class OutboundMsgData extends MsgData {
+  static total: number = 0
+  constructor(msg: IMsgData){
+    super(msg)
+    OutboundMsgData.total++
+  }
+  public static fromObjArray(msgarr: IMsgData[]): OutboundMsgData[]{
+    return msgarr.map((msg) => new OutboundMsgData(msg))
+  }
+}
+
 export type MsgAction = AddChatMsg | SetChatMsg | RemoveChatMsg | ClearChatMsg
 
 type AddChatMsg = {
@@ -25,9 +75,11 @@ type AddChatMsg = {
   msgs: MsgData[]
 }
 
+type MsgDataIndex = number
+
 type RemoveChatMsg = {
   type: MsgActionType.REMOVE,
-  index: number
+  index: MsgDataIndex
 }
 
 type ClearChatMsg = {
@@ -36,7 +88,7 @@ type ClearChatMsg = {
 
 type SetChatMsg = Omit<AddChatMsg, 'type'> & { type: MsgActionType.SET }
 
-const doChatMsgs = (state: MsgData[], msgAction: MsgAction ): MsgData[] => {
+function doChatMsgs(state: MsgData[], msgAction: AddChatMsg | SetChatMsg | RemoveChatMsg | ClearChatMsg ): MsgData[]  {
   if (msgAction.type === MsgActionType.ADD) {
     return [...state, ...msgAction.msgs]
   }else if (msgAction.type === MsgActionType.SET) {
@@ -53,25 +105,40 @@ const useChat = (chatId: string) => {
   const [chatMsgs, changeChatMsgs] = useReducer(doChatMsgs, [] as MsgData[])
   const [connectionStatus, setConnectStatus] = useState<ChatConnectionStatus>(ChatConnectionStatus.CONNECTING)
   const socketRef = useRef<Socket>()
-  const handleSocketEvent = (socket: Socket) => {
+  const handleListenIoEvent = (socket: Socket) => {
     handleConnect(socket, setConnectStatus)
     handleConnectError(socket, setConnectStatus)
     handleIncomingMsg(socket, changeChatMsgs)
     handleJoinRoom(socket, setConnectStatus)
+    socket.onAny((msg) => {
+      console.log('Incoming Event:',msg)
+    })
+  }
+
+  const sendTextChatMsg = (sender: string, senderId: string, content: string) => {
+    if (socketRef.current && connectionStatus === ChatConnectionStatus.JOINED){
+      const newMsg = new OutboundMsgData({
+        sender,
+        senderId,
+        content,
+        contentType: 'text'
+      }) 
+      emitSendChatMsg(socketRef.current, newMsg)
+    }
+  }
+
+  const sendChatMsg = (msg: MsgData) => {
+    if (socketRef.current && connectionStatus === ChatConnectionStatus.JOINED){
+      emitSendChatMsg(socketRef.current, msg)
+    }
   }
 
 
-  const sendChatMsg = (sender: string, senderId: string, data: string) => {
-    if (socketRef.current && connectionStatus === ChatConnectionStatus.JOINED)
-      emitSendChatMsg(socketRef.current, {sender, senderId, data})
-  }
 
   useEffect(() => {
     socketRef.current = io(process.env.NEXT_PUBLIC_SOCKET_URL || '')
-    handleSocketEvent(socketRef.current)
-    socketRef.current.onAny((msg)=> {
-      console.log('Incoming Event:',msg)
-    })
+    handleListenIoEvent(socketRef.current)
+  
     return () => {
       socketRef.current?.disconnect()
     }
@@ -82,7 +149,7 @@ const useChat = (chatId: string) => {
     const socket = socketRef.current
     switch (connectionStatus) {
     case ChatConnectionStatus.CONNECTING: {
-      console.log('Connecting to chat server')
+      console.log('Connecting to chat server.')
       break
     }
     case ChatConnectionStatus.ERROR: {
@@ -90,9 +157,9 @@ const useChat = (chatId: string) => {
       break
     }
     case ChatConnectionStatus.CONNECTED: {
-      console.log('Successfully connected to chat server')
+      console.log('Successfully connected to chat server.')
       if (socket){
-        console.log('Joining room')
+        console.log('Joining room...')
         emitJoinRoom(socket, chatId)
       }
       break
@@ -102,14 +169,13 @@ const useChat = (chatId: string) => {
       if (socket){
         emitRequestAllMsg(socket)
       }
-      
       break
     }
     }
       
   }, [connectionStatus, chatId])
 
-  return { chatMsgs, changeChatMsgs, sendChatMsg, connectionStatus }
+  return { chatMsgs, changeChatMsgs, sendChatMsg, sendTextChatMsg, connectionStatus }
 }
 
 export default useChat

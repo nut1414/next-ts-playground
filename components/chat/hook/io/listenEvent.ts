@@ -1,6 +1,6 @@
 import React from 'react'
 import { Socket } from 'socket.io-client'
-import { ChatConnectionStatus, MsgAction, MsgActionType } from '../useChat'
+import { ChatConnectionStatus, InboundMsgData, MsgAction, MsgActionType } from '../useChat'
 
 
 
@@ -20,7 +20,7 @@ export const handleConnectError = (socket: Socket, setConnectStatus: React.Dispa
 export const handleIncomingMsg = (socket: Socket, changeChatMsgs: React.Dispatch<MsgAction>) => {
   socket.on('chat:msgs', (msgs) => {
     console.log(msgs)
-    changeChatMsgs({type: MsgActionType.ADD, msgs})
+    changeChatMsgs({type: MsgActionType.ADD, msgs: InboundMsgData.fromObjArray(msgs)})
   })
 }
 

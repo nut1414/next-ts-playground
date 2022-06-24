@@ -1,16 +1,10 @@
 import { Socket } from 'socket.io-client'
-import { MsgData } from '../../Msg'
+import { OutboundMsgData } from '../useChat'
 
 // TODO: Make 'sender' depend on the server response
 // request sender-senderid map -> attach sender on to msg -> render
 
-interface SenderMsg {
-  sender: string
-  senderId: string
-  data: string
-}
-
-export const emitSendChatMsg = (socket: Socket, sendmsg: SenderMsg) => {
+export const emitSendChatMsg = (socket: Socket, sendmsg: OutboundMsgData) => {
   socket.emit('chat:addmsg', sendmsg)
 }
 

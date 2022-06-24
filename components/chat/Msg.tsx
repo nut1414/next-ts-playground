@@ -1,9 +1,4 @@
-export interface MsgData {
-  _id: string
-  sender: string
-  senderId: string
-  data: string
-}
+import { MsgData } from './hook/useChat'
 
 type MsgProps = {
   msg: MsgData,
@@ -16,7 +11,7 @@ const Msg = ({ msg, asAuthor }: MsgProps) => {
     return (
       <div className='self-end  p-1'>
         <div className={`bg-blue-500 place-self-end text-white ${ALIGNCONST}`} >
-          {msg.data}
+          {msg.content}
         </div>
       </div>
     )
@@ -27,7 +22,7 @@ const Msg = ({ msg, asAuthor }: MsgProps) => {
         {msg.sender}
       </div>
       <div className={`bg-slate-500 text-white ${ALIGNCONST}`}>
-        {msg.data}
+        {msg.content}
       </div>
     </div>
   )
